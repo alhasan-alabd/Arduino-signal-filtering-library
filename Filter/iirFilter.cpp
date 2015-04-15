@@ -7,9 +7,8 @@
 /// Constructor
 iirFilter::iirFilter()
 {
-  _y[0]=0;
-  _y[1]=0;
-  _y[2]=0;
+ v[0]=0.0;
+			v[1]=0.0;
 }
 
 /// Begin function: set default filter options
@@ -20,10 +19,15 @@ void iirFilter::begin()
 int iirFilter::run(int data)
 {
 // not an iirFilter implementation (just a placeholder)
-  _x[0] = _x[1];
-  long tmp = ((((data * 3269048L) >>  2)          //= (3.897009118e-1 * data)
-    + ((_x[0] * 3701023L) >> 3)                   //+(  0.2205981765*v[0])
-    )+1048576) >> 21;                             // round and downshift fixed point /2097152
-  _x[1]= (int)tmp;
-  return (int)(_x[0] + _x[1]);                    // 2^
+  v[0] = v[1];
+			v[1] = v[2];
+			v[2] = (9.446918438402e-4 * x)
+				 + ( -0.9149758348 * v[0])
+				 + (  1.9111970674 * v[1]);
+			return 
+				 (v[0] + v[2])
+				+2 * v[1];                           // round and downshift fixed point /2097152
+return 
+				 (v[0] + v[2])
+				+2 * v[1];
 }
